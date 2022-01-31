@@ -70,8 +70,8 @@ long long int lca(int x, int y) {
  
 int main() {
     ios::sync_with_stdio(0);
-    int c = 0;
-    long long int x=0, y=0;
+    
+    int x=0, y=0, c=0;
  
     while(cin >> n && n) {
         limpar();
