@@ -1,49 +1,47 @@
 #include <iostream>
-#include <vector>
-#include <queue>
+#include <stack>
 
 using namespace std;
 
-const int MAXN(1E5);
-
 int main() {
-    int n = 0, d = 0, index = 0, count = 0, maior = 0, del = 0;
+    ios::sync_with_stdio(0); 
+    
+    int n = 0, d = 0, del = 0;
     string num;
-    vector<int> aux (MAXN);
-    queue<int> fila;
+    stack<char> pilha;
+    stack<char> aux;
 
-    while(cin >> n >> d && n && d) {
+    while(cin >> n >> d && n) {
         del = d;
         cin.get();
 
         getline(cin, num);
-        
-        for(int i = 0; i < n; i++) {
-            aux[i] = num[i]-'0';
-        }
 
-        while(fila.size() != n-d) {
-            for(int i = count; i <= del+count; i++) {
-                if(aux[i] > maior) {
-                    maior = aux[i];
-                    index = i;
+        pilha.push(num[0]);
+
+        for(int i = 1; i < n; i++) {
+            if(num[i-1] < num[i] && del > 0) {
+                pilha.pop();
+                del--;
+                while(!pilha.empty() && num[i] > pilha.top() && del > 0) {
+                    pilha.pop();
+                    del--;
                 }
             }
-
-            fila.push(maior);
-            del = del - (index - count);
-            count = index + 1;
-            maior = 0;
+            pilha.push(num[i]);
+        }
+        
+        while(!pilha.empty()) {
+            aux.push(pilha.top());
+            pilha.pop();
         }
         
         for(int i = 0; i < n-d; i++) {
-            cout << fila.front();
-            fila.pop();
+            cout << aux.top();
+            aux.pop();
         }
         
-        cout << endl;
-
-        index = 0, count = 0, maior = 0, del = 0;
+        cout << endl; 
     }
 
     return 0;
