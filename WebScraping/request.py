@@ -20,10 +20,8 @@ if r.status_code == 200:
     df = pd.DataFrame(data=categories, columns=["Name", "Link"])
     df = df.sort_values(by="Name")
 
-    # Salvando os dados no arquivo categories.csv
     df.to_csv("categories.csv")
 
-    # Para carregar os dados nós usamos o read_csv. O parâmetro index_col parameter informa o pandas que a primeira coluna do nosso csv está guardando o indice
     df = pd.read_csv("categories.csv", index_col=0)
     for index,book in df.iterrows():
         print("{}: {} , {}".format(index,book["Name"], book["Link"]))
