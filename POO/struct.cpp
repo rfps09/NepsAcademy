@@ -23,6 +23,11 @@ struct Inimigo {
         vivo = VIVO;
     }
 
+    //O código dentro de ~Inimigo(){} sempre é executado quando a struct morre
+    ~Inimigo() {
+        printf("a struct morreu");
+    }
+
     //TODO: Método que muda a o status do inimigo de vivo para morto caso seja acertado pelo lazer na posição (X,Y). Também deve atualizar a variável quantidade_vivos.
     void foi_acertado(int X, int Y){
         if(x == X && y == Y && vivo) {
