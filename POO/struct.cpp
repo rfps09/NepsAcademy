@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-struct Inimigo {    
+struct Inimigo {
+public:
     int id;
     int x; 
     int y;
