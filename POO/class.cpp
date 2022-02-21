@@ -1,51 +1,97 @@
 #include <stdio.h>
 
-class Pontos {
+class Inimigo {    
+    int id;
+    int x; 
+    int y;
+    bool vivo;
+
 public:
-	int x,y;
-    Pontos() {
-        x = 0;
-        y = 0;
+    Inimigo(){}
+
+    //TODO: Crie um construtor que inicializa um inimigo usando os parâmetros abaixo.
+    Inimigo(int id, int x, int y, bool vivo){
+        this->id = id;
+        this->x = x;
+        this->y = y;
+        this->vivo = vivo;
     }
-    Pontos(int X,int Y) {
-        x = X;
-        y = Y;
+
+    //TODO: Crie um método que muda a o status do inimigo de vivo para morto caso seja acertado pelo lazer na posição (X,Y).
+    //Retorna true caso o inimigo tenha sido acertado pela primeira vez e falso caso contrário.
+    bool foi_acertado(int x, int y){
+        if(this->x == x && this->y == y && vivo == true) {
+            vivo = false;
+            return true;
+        }
+        return false;
     }
+
 };
 
-class Retangulo {
-	Pontos superior_esquerdo;
-	Pontos inferior_direito;
-	
-public:
-	void set_pontos(int x1,int y1,int x2,int y2){
-		superior_esquerdo = Pontos(x1,y1);
-        inferior_direito = Pontos(x2,y2);
-	}
+class Fase{
 
-    int area() {
-        return (inferior_direito.x - superior_esquerdo.x) * (superior_esquerdo.y - inferior_direito.y);
+    Inimigo *inimigos;
+    int quantidade_inimigos;
+    int pontos; 
+    int municao;
+
+public:
+    Fase(int quantidade_inimigos, int municao){
+        this->inimigos = new Inimigo[quantidade_inimigos];        
+        this->quantidade_inimigos = quantidade_inimigos;
+        this->pontos = 0;
+        this->municao = municao;
     }
+
+    //TODO: Crie um método quer ler as coordenadas do inimigos (conforme a descrição de entrada) e inicialize o vetor inimigos utilizando o construtor da classe Inimigo.
+    void inicializar_inimigos(){
+        int x,y;
+        for(int i = 0; i < quantidade_inimigos; i++) {
+            scanf("%d %d", &x, &y);
+            inimigos[i] = Inimigo(i+1,x,y,true);
+        }
+    }
+
+    //TODO: Crie um método que simula as T tentativas de disparos, caso o disparo acerte um inimigo incremente a pontuação em 10 pontos. Seu método deve ler as coordenadas dos disparos conforme o exemplo de entrada.
+    //Dica: Lembre-se que o jogador só tem M munições por fase e ele não deve ser capaz de disparar após a munição acabar.
+    void jogar(int T){
+        int x, y;
+        for(int i = 0; i < T; i++) {
+            scanf("%d %d", &x, &y);
+            if(municao > 0) {
+                for(int j = 0; j < quantidade_inimigos; j++) {
+                    if(inimigos[j].foi_acertado(x,y))
+                    pontos+=10;
+                }
+                municao--;
+            }
+        }
+    }
+    
+    void imprimir_relatorio(){
+        //Crie um for que imprime todos os inimigos que foram acertados e morreram.
+        printf("Relatorio da Fase\n");
+        printf("Pontuacao: %d\n", this->pontos);
+        printf("Municao: %d\n", this->municao);
+    }
+
 };
 
 int main(){
 
-    Retangulo retangulo;
-    int N;
+    int N; //Quantidade de Inimigos
+    int M; //Quantidade de Munição
 
-    scanf("%d", &N);
+    scanf("%d %d", &N, &M); 
 
-    for(int i=0;i<N;i++){
-        int x1, y1, x2, y2;
-        char operacao;
+    Fase fase = Fase(N, M);
 
-        scanf(" %c", &operacao);
+    fase.inicializar_inimigos();
 
-        if(operacao == 'R'){ //Redimensionar
-            scanf("%d %d %d %d", &x1, &y1, &x2, &y2);
-            retangulo.set_pontos(x1, y1, x2, y2);
-        }else if(operacao == 'A'){ //Imprimir a área
-            printf("%d\n", retangulo.area());
-        }
-    }
+    int T; //Quantidade de Tentativas
+    scanf("%d", &T); 
+
+    fase.jogar(T);
+    fase.imprimir_relatorio();        
 }
