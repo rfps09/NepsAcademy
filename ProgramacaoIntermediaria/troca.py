@@ -3,11 +3,6 @@ up = input().split()
 down = input().split()
 ans = [0]*int(1e5+1)
 
-class teste:
-    def __init__(x,y,self):
-        self.cima = x
-        self.baixo = y
-
 for k in range(int(t)):
     i,j = input().split()
     i = int(i)
