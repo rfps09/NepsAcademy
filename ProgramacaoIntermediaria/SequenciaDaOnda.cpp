@@ -2,22 +2,22 @@
 
 using namespace std;
 
-const long long int cresc = 0;
-const long long int desc = 1;
-const long long int MAXN = 1e5+1;
-const long long int INF = 1e9+10;
+const int cresc = 0;
+const int desc = 1;
+const int MAXN = 1e5+1;
+const int INF = 1e9+10;
 
-long long int dp[MAXN];
-long long int atual[MAXN];
-long long int anterior[MAXN];
+int dp[MAXN];
+int atual[MAXN];
+int anterior[MAXN];
 
-void troca(long long int &a, long long int &b) {
-    long long int aux = a;
+void troca(int &a, int &b) {
+    int aux = a;
     a = b;
     b = aux;
 }
 
-void solve(long long int *vetor, long long int len, long long int order, long long int *ans) {
+void solve(int *vetor, int len, int order, int *ans) {
     if(order) {
         for(int i=0; i<len/2; i++) {
             troca(vetor[i], vetor[len-i-1]);
@@ -31,7 +31,7 @@ void solve(long long int *vetor, long long int len, long long int order, long lo
     }
 
     for(int i=0;i<len;i++) {
-        long long int p = lower_bound(dp,dp+len+1,vetor[i]) - dp;
+        int p = lower_bound(dp,dp+len+1,vetor[i]) - dp;
         dp[p] = vetor[i];
         if(atual[p] == -1)atual[p] = i;
         anterior[i] = atual[p-1];
@@ -42,8 +42,8 @@ void solve(long long int *vetor, long long int len, long long int order, long lo
     }
     
     ans[0] = dp[0];
-    long long int count = 1;
-    long long int value = atual[dp[0]];
+    int count = 1;
+    int value = atual[dp[0]];
 
     for(int i=dp[0]; i>0; i--) {
         ans[count] = value;
@@ -53,23 +53,23 @@ void solve(long long int *vetor, long long int len, long long int order, long lo
 }
 
 int main() {
-    long long int m=0;
+    int m=0;
 
     cin >> m;
 
-    long long int vetor[m];
+    int vetor[m];
 
     for(int i=0; i<m; i++) {
         cin >> vetor[i];
     }
 
-    long long int ansCresc[MAXN];
+    int ansCresc[MAXN];
     solve(vetor,m,cresc,ansCresc);
-    long long int ansDesc[MAXN];
+    int ansDesc[MAXN];
     solve(vetor,m,desc,ansDesc);
 
-    long long int iCresc= 1;
-    long long int iDesc= 1;
+    int iCresc= 1;
+    int iDesc= 1;
 
     while(ansCresc[iCresc] > abs(ansDesc[iDesc]-(m-1))) {
         if(ansCresc[0] > ansDesc[0]) {
@@ -82,7 +82,7 @@ int main() {
         }
     }
     
-    long long int ans=0;
+    int ans=0;
     
     ans = min(ansCresc[0],ansDesc[0]) * 2 - 1;
 
